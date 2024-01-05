@@ -1,3 +1,5 @@
+import json
+
 class Position:
     #object it represents the result of a strategy backtested  
     def __init__(self, pair, dataset, status, last_emacross_price, last_emacross_date):
@@ -25,7 +27,7 @@ def get_status(data):
         return 1
     return 0
 
-def get_last_cross_date(data):
+def get_last_cross(data):
     last_fast_ema = data.iloc[-1]['Fast-Ema']
     last_slow_ema = data.iloc[-1]['Slow-Ema']
 
@@ -39,4 +41,9 @@ def get_last_cross_date(data):
         while data.iloc[i]['Fast-Ema'] < data.iloc[i]['Slow-Ema']:
             i -= 1
 
-    return data.iloc[i]['Date']
+    return [data.iloc[i]['Close'], data.iloc[i]['Date']]
+
+def get_status_lable(status):
+    if status == 1:
+        return 'Long'
+    return 'Short'

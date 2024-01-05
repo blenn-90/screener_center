@@ -1,6 +1,6 @@
 import sys
 import pandas as pd
-import src.utilities.noshare_data as noshare_data
+import utilities.noshare_static_data as noshare_static_data
 from kucoin.client import Client
 import time
 from datetime import datetime
@@ -10,7 +10,7 @@ from os.path import isfile, join
 from pathlib import Path
 
 def get_pairs():
-    client = Client(noshare_data.kc_apikey, noshare_data.kc_secret, noshare_data.kc_passphrase)
+    client = Client(noshare_static_data.kc_apikey, noshare_static_data.kc_secret, noshare_static_data.kc_passphrase)
     tickers = client.get_symbols()
     
     usdt_tickers = []
@@ -22,7 +22,7 @@ def get_pairs():
     return usdt_tickers
 
 def save_pair_data_4h(pair):
-    client = Client(noshare_data.kc_apikey, noshare_data.kc_secret, noshare_data.kc_passphrase)
+    client = Client(noshare_static_data.kc_apikey, noshare_static_data.kc_secret, noshare_static_data.kc_passphrase)
     interval = '4hour'
     years_2015_1_6 = [1420070400, 1433116800]
     years_2015_6_12 = [1433116800, 1451606400]
@@ -72,7 +72,7 @@ def save_pair_data_4h(pair):
             final_hist_df = (final_hist_df.copy() if hist_df.empty else hist_df.copy() if final_hist_df.empty else pd.concat([final_hist_df, hist_df])) # if both DataFrames non empty)
     
     final_hist_df.sort_values(by='Date', inplace = True)
-    final_hist_df.to_csv(sys.path[noshare_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv")
+    final_hist_df.to_csv(sys.path[noshare_static_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv")
     return final_hist_df
 
 
@@ -112,7 +112,7 @@ def read_csv_data(path, timeframe, filename):
     return data
 
 def get_file_data_set():
-    path = sys.path[noshare_data.project_sys_path_position] + "\\data"
+    path = sys.path[noshare_static_data.project_sys_path_position] + "\\data"
     # retrive all in-sample tradingview files
     folder_kucoin = "kucoin_4h"
     print("checking files from {folder} folder".format( folder = folder_kucoin ))
