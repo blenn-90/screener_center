@@ -1,0 +1,15 @@
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    margin-left: auto;
+    margin-right: 0px;
+    font-size: 10px;
+    text-align: right;
+}
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 110%;
+}

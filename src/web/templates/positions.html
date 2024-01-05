@@ -1,0 +1,57 @@
+{# templates/positions.html #}
+
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Open Positions</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    {% for header in headings %}
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ header }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for position in items_pagination %}
+                  <tr>
+                    <td class=""><p class="text-xs font-weight-bold mb-0">{{ position.pair }}</p></td>
+                    <td class="align-middle text-sm">
+                      <span class="badge badge-sm bg-gradient-success">{{ position.status }}</span>
+                    </td>
+                    <td class="">
+                      <p class="text-xs font-weight-bold mb-0">{{ position.ema_cross_price }}$</p>
+                      <p class="text-xs text-secondary mb-0">{{ position.ema_cross_date }}</p>
+                    </td>
+                    <td class="">
+                      <p class="text-xs font-weight-bold mb-0">{{ position.current }}$</p>
+                      <p class="text-xs text-secondary mb-0">{{ position.last_update_at }}</p>
+                    </td>
+                    <td class="">
+                      <p class="text-xs font-weight-bold mb-0">{{ position.ema_distance }}%</p>
+                      <p class="text-xs text-secondary mb-0">Fast {{ position.fast_ema }}$ - Slow {{ position.slow_ema }}$</p>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {{ pagination.info }}
+              {{ pagination.links }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}          

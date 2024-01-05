@@ -13,11 +13,9 @@ def get_data():
     # retrive all out_of_sample files
     timeframe = "kucoin_4h"
     print("retrive data from {timeframe} folder".format( timeframe = timeframe ))
-    print(get_noshare_data.project_sys_path_position)
     path = sys.path[get_noshare_data.project_sys_path_position] + "\\data"
-    print(path)
     data_file_set = [f for f in listdir(path + "\\" + timeframe) if isfile(join(path + "\\" + timeframe, f))]
-    print("found {number} pairs".format( number = data_file_set.count ))
+   
     final_dataset = {}
 
     for data_file in data_file_set:
@@ -34,10 +32,13 @@ def get_data():
             final_df = temp2_df.merge(ema_slow_df, how='left', on='Date')
             
             final_dataset[data_file] = final_df
+    
+    print("dataset is ready")
     return final_dataset
 
 #building data
 def get_positions(final_dataset):
+    print("start reading positions")
     #open positions
     positions = []
     for key, value in final_dataset.items():
@@ -57,11 +58,12 @@ def get_positions(final_dataset):
             }
         
         positions.append(position_json)
-
+    print("end reading positions")
     #get last update   
     return positions
 
 def get_updates(final_dataset):
+    print("start reading updates")
     #get updates
     updates = []
     for key, value in final_dataset.items():
@@ -83,6 +85,7 @@ def get_updates(final_dataset):
                 updates.append(update_json)
                
             i = i - 1
+    print("end reading positions")
     return updates
         
 
