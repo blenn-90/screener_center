@@ -9,7 +9,7 @@ def i_atr(data, length):
 def i_atr_v2(data, lenght):
     atr = ta.atr(data.High, data.Low, data.Close, length=lenght)
     if atr is not None:
-        return pd.DataFrame({'Date':atr.index, 'ATR':atr.values})
+        return pd.DataFrame({'Date':atr.index, 'atr':atr.values})
     return  pd.DataFrame()
 
 def get_atr_by_date(atr_df, date):

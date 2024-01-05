@@ -127,13 +127,25 @@
                               </tr>
                             </thead>
                             <tbody>
-                              {% for position in data_signal %}
+                              {% for update in updates %}
                               <tr>
-                                {% for cell in position %}
-                                <td class="align-left text-left text-sm">
-                                    <p class="text-xs font-weight-bold mb-0">{{ cell }}</p>
+                                <td class=""><p class="text-xs font-weight-bold mb-0">{{ update.pair }}</p></td>
+                                <td class="align-middle text-sm">
+                                  <span class="badge badge-sm bg-gradient-success">{{ update.type }}</span>
                                 </td>
-                                {% endfor %}
+                                <td class="">
+                                  <p class="text-xs font-weight-bold mb-0">{{ update.value }}$</p>
+                                  <p class="text-xs text-secondary mb-0">{{ update.date }}</p>
+                                </td>
+                                <td class="">
+                                  <p class="text-xs font-weight-bold mb-0">{{ update.fast_ema }}$</p>
+                                </td>
+                                <td class="">
+                                  <p class="text-xs font-weight-bold mb-0">{{ update.slow_ema }}$</p>
+                                </td>
+                                <td class="">
+                                  <p class="text-xs font-weight-bold mb-0">{{ update.atr }}</p>
+                                </td>
                               </tr>
                               {% endfor %}
                             </tbody>

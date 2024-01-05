@@ -9,8 +9,7 @@ from os import listdir
 from os.path import isfile, join
 import sys
 
-#building data
-def get_positions():
+def get_data():
     # retrive all out_of_sample files
     timeframe = "kucoin_4h"
     print("retrive data from {timeframe} folder".format( timeframe = timeframe ))
@@ -35,8 +34,11 @@ def get_positions():
             final_df = temp2_df.merge(ema_slow_df, how='left', on='Date')
             
             final_dataset[data_file] = final_df
-            
-    #calculate open positions
+    return final_dataset
+
+#building data
+def get_positions(final_dataset):
+    #open positions
     positions = []
     for key, value in final_dataset.items():
         status = position.get_status(value)
@@ -56,6 +58,31 @@ def get_positions():
         
         positions.append(position_json)
 
-    #get last update
-        
+    #get last update   
     return positions
+
+def get_updates(final_dataset):
+    #get updates
+    updates = []
+    for key, value in final_dataset.items():
+
+        #analyze 1 week of data on any pair
+        number_of_candle_4h_tba = -6*14
+        i = -1
+        while i > number_of_candle_4h_tba:
+            cross_type = position.check_cross_by_candle(value, i)
+            if cross_type != 0 :
+                update_json = {
+                    'pair': key.split("-")[0], 
+                    'type': position.get_update_type(cross_type), 
+                    'value': utlities_sources.fun_format_4decimal(value.iloc[i]['Close']),
+                    'date': str(value.iloc[i]['Date']), 
+                    'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Fast-Ema']),
+                    'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Slow-Ema']),
+                    'atr': utlities_sources.fun_format_4decimal(value.iloc[i]['atr'])}     
+                updates.append(update_json)
+               
+            i = i - 1
+    return updates
+        
+

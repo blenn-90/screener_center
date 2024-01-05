@@ -47,3 +47,30 @@ def get_status_lable(status):
     if status == 1:
         return 'Long'
     return 'Short'
+
+def check_cross_by_candle(data, i):
+    i_fast_ema = data.iloc[i]['Fast-Ema']
+    i_slow_ema = data.iloc[i]['Slow-Ema']
+
+    i_previous_fast_ema = data.iloc[i-1]['Fast-Ema']
+    i_previous_slow_ema = data.iloc[i-1]['Slow-Ema']
+
+    #bullish cross on this candle
+    if i_fast_ema > i_slow_ema and i_previous_fast_ema < i_previous_slow_ema:
+        return 1
+    
+    #bullish cross on this candle
+    if i_fast_ema < i_slow_ema and i_previous_fast_ema > i_previous_slow_ema:
+        return -1
+    
+    #no cross
+    return 0
+
+def get_update_type(type):
+    label = ''
+    if type == 1:
+        label = 'Bullish Cross'
+    elif type == -1:
+        label = 'Bearish Cross' 
+    
+    return label
