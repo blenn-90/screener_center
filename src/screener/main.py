@@ -21,7 +21,7 @@ def get_data():
     for data_file in data_file_set:
         data = kucoin_data.read_csv_data(path, timeframe, data_file)
         #running backtesting
-        filter_data = data[ (data.index > "2022-11-01") & (data.index < "2024-02-01")]
+        filter_data = data[ (data.index > "2023-07-01") & (data.index < "2024-02-01")]
         atr_df = indicator_atr.i_atr_v2(filter_data, sources.atr_length)
         ema_fast_df = indicator_ema.i_ema_fast_v2(filter_data, sources.fast_ema)
         ema_slow_df = indicator_ema.i_ema_slow_v2(filter_data, sources.slow_ema)
