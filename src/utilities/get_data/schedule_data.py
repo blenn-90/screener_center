@@ -30,9 +30,9 @@ def job():
             last_data = ts - 86400
         historical = client.get_kline_data( pair, kline_type=interval, start=int(last_data) + 14400, end=int(ts))
         if not historical:
-            print(pair + " no data between " +  str(datetime.fromtimestamp(ts)) +" and " + str(datetime.fromtimestamp(last_data)))
+            print(pair + " no data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)))
         else:
-            print(pair + " found data between " +  str(datetime.fromtimestamp(ts)) +" and " + str(datetime.fromtimestamp(last_data)))
+            print(pair + " found data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)))
             hist_df = pd.DataFrame(historical)
             hist_df.columns = ['Date', 'Open', 'Close', 'High', 'Low', 'Amount', 'Volume']
             hist_df['Date'] = pd.to_datetime(hist_df['Date'], unit='s')

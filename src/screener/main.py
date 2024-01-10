@@ -54,7 +54,8 @@ def get_positions(final_dataset):
             'last_update_at': str(value.iloc[-1]['Date']), 
             'ema_distance': utlities_sources.fun_format_2decimal((value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100),
             'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Fast-Ema']),
-            'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema'])
+            'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema']),
+            'special_exit': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema'] * sources.special_exit)
             }
         
         positions.append(position_json)
@@ -86,6 +87,6 @@ def get_updates(final_dataset):
                
             i = i - 1
     print("end reading positions")
-    return updates
+    return sorted(updates, key=lambda d: d['date'],reverse=True) 
         
 
