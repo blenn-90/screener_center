@@ -2,7 +2,7 @@ import schedule
 import time as tm
 from datetime import time, datetime, timedelta
 import src.utilities.noshare_static_data as noshare_static_data
-import src.utilities.get_data.kucoin_data as kucoin_data
+import src.utilities.get_data.exchange_data as kucoin_data
 
 from kucoin.client import Client
 import sys
