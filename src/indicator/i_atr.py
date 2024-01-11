@@ -7,7 +7,6 @@ def i_atr(data, length):
     return atr.to_numpy().T
 
 def i_atr_v2(data, lenght):
-    print(data)
     atr = ta.atr(data.High, data.Low, data.Close, length=lenght)
     if atr is not None:
         return pd.DataFrame({'Date':atr.index, 'atr':atr.values})

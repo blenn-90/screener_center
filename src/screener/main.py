@@ -24,7 +24,7 @@ def get_data():
         filter_data = data[ (data.index > "2023-07-01") & (data.index < "2024-02-01")]
         atr_df = indicator_atr.i_atr_v2(filter_data, sources.atr_length)
         ema_fast_df = indicator_ema.i_ema_fast_v2(filter_data, sources.fast_ema)
-        ema_slow_df = indicator_ema.i_ema_slow_v2(filter_data, sources.slow_ema)
+        ema_slow_df = indicator_ema.i_ema_slow_v2(filter_data, sources.slow_ema) 
 
         if not atr_df.empty and not ema_fast_df.empty and not ema_slow_df.empty:
             temp_df = atr_df.merge(ema_fast_df, how='left', on='Date')
