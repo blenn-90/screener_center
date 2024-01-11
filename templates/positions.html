@@ -27,15 +27,12 @@
                   {% for position in items_pagination %}
                   <tr>
                     <td class=""><p class="text-xs font-weight-bold mb-0">{{ position.pair }}</p></td>
-                    <td class="align-middle text-sm">
-                      <span class="badge badge-sm bg-gradient-success">{{ position.status }}</span>
-                    </td>
                     <td class="">
                       <p class="text-xs font-weight-bold mb-0">{{ position.ema_cross_price }}$</p>
                       <p class="text-xs text-secondary mb-0">{{ position.ema_cross_date }}</p>
                     </td>
                     <td class="">
-                      <p class="text-xs font-weight-bold mb-0">{{ position.current }}$</p>
+                      <p class="text-xs font-weight-bold mb-0">{{ position.current }}$ ({{ position.price_distance }}%) </p>
                       <p class="text-xs text-secondary mb-0">{{ position.last_update_at }}</p>
                     </td>
                     <td class="">

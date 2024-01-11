@@ -51,6 +51,7 @@ def get_positions(final_dataset):
             'ema_cross_price': utlities_sources.fun_format_4decimal(position.get_last_cross(value)[0]) ,
             'ema_cross_date': str(position.get_last_cross(value)[1]), 
             'current': utlities_sources.fun_format_4decimal(value.iloc[-1]['Close']),
+            'price_distance': utlities_sources.fun_format_4decimal( (value.iloc[-1]['Close']-position.get_last_cross(value)[0]) / position.get_last_cross(value)[0] * 100),
             'last_update_at': str(value.iloc[-1]['Date']), 
             'ema_distance': utlities_sources.fun_format_2decimal((value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100),
             'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Fast-Ema']),
