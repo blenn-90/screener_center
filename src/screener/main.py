@@ -3,7 +3,7 @@ import src.indicator.i_ema as indicator_ema
 import src.screener.sources as sources
 import src.utilities.sources as utlities_sources
 import src.utilities.noshare_static_data as get_noshare_data 
-import src.utilities.get_data.kucoin_data as kucoin_data
+import src.utilities.get_data.exchange_data as kucoin_data
 import src.classes.position as position
 from os import listdir
 from os.path import isfile, join

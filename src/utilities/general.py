@@ -28,7 +28,8 @@ def job():
         if not data.empty:
             last_data= datetime.timestamp(data.index[-1]) + 14400
         else:
-            last_data = ts - 86400
+            last_data = ts - 17280000
+
         historical = client.get_kline_data( pair, kline_type=interval, start=int(last_data) + 14400, end=int(ts))
         if not historical:
             print(pair + " no data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)))

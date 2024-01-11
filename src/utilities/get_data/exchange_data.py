@@ -1,6 +1,6 @@
 import sys
 import pandas as pd
-import src.utilities.noshare_data as noshare_data
+import src.utilities.noshare_static_data as noshare_data
 from kucoin.client import Client
 import time
 from datetime import datetime
