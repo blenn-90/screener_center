@@ -1,4 +1,3 @@
-import schedule
 import time as tm
 from datetime import time, datetime, timedelta
 import src.utilities.noshare_static_data as noshare_static_data
@@ -28,7 +27,7 @@ def job():
         if not data.empty:
             last_data= datetime.timestamp(data.index[-1]) + 14400
         else:
-            last_data = ts - 15640000
+            last_data = ts - 17280000
         historical = client.get_kline_data( pair, kline_type=interval, start=int(last_data) + 14400, end=int(ts))
         if not historical:
             print(pair + " no data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)))
@@ -51,5 +50,3 @@ def job():
             temp_df.to_csv(sys.path[noshare_static_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv")
         else:
             final_hist_df.to_csv(sys.path[noshare_static_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv") 
-
-job()
