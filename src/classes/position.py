@@ -74,3 +74,12 @@ def get_update_type(type):
         label = 'Bearish Cross' 
     
     return label
+
+def get_update_type_color(type):
+    label = ''
+    if type == 1:
+        label = 'success'
+    elif type == -1:
+        label = 'secondary' 
+    
+    return label

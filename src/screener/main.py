@@ -77,7 +77,8 @@ def get_updates(final_dataset):
             if cross_type != 0 :
                 update_json = {
                     'pair': key.split("-")[0], 
-                    'type': position.get_update_type(cross_type), 
+                    'type': position.get_update_type(cross_type),
+                    'typecolor': position.get_update_type_color(cross_type),
                     'value': utlities_sources.fun_format_4decimal(value.iloc[i]['Close']),
                     'date': str(value.iloc[i]['Date']), 
                     'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Fast-Ema']),
