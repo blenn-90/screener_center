@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 from waitress import serve
 import src.screener.main as screener
 from flask_paginate import Pagination, get_page_parameter
@@ -69,6 +69,16 @@ def updates_def():
                             menu = menu
                             )
 
+@app.route('/export_tradingview')
+def download():
+    final_txt = "" 
+    for pair in positions:
+        final_txt = final_txt + "KUCOIN:"+ pair['pair'] + "USDT,"
+
+    return Response(
+        final_txt,
+        mimetype='text/plain',
+        headers={'Content-disposition': 'attachment; filename=export_tradingview.txt'})
 
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=8000)
