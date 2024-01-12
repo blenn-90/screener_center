@@ -9,9 +9,6 @@ print("----- START RETRIVING DATA -----")
 
 headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit")
 headings_signal = ("Pair", "Type", "Value",  "Fast Ema", "Slow Ema", "ATR")
-data = screener.get_data()
-updates = screener.get_updates(data)
-positions = screener.get_positions(data)
 
 print("----- END RETRIVING DATA -----")
 
@@ -28,6 +25,9 @@ def index():
 
 @app.route('/positions')
 def positions_def():
+    data = screener.get_data()
+    positions = screener.get_positions(data)
+
     menu = [{'label':'Dashboard','class':'', 'href':'/index', 'icon':'dashboard'}, 
         {'label':'Open Trades','class':'active bg-gradient-primary', 'href':'/positions','icon':'receipt_long'}, 
         {'label':'Last Updates','class':'', 'href':'/updates', 'icon':'notifications'}]
@@ -48,6 +48,9 @@ def positions_def():
 
 @app.route('/updates')
 def updates_def():
+    data = screener.get_data()
+    updates = screener.get_updates(data)
+    
     menu = [{'label':'Dashboard','class':'', 'href':'/index', 'icon':'dashboard'}, 
         {'label':'Open Trades','class':'', 'href':'/positions', 'icon':'receipt_long'}, 
         {'label':'Last Updates','class':'active bg-gradient-primary', 'href':'/updates', 'icon':'notifications'}]
