@@ -113,4 +113,3 @@ def get_dashboard_data(final_dataset, positions):
     
     print("end reading dashboard")
     return dashboard_json
-     
