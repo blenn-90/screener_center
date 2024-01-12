@@ -12,6 +12,7 @@ headings_signal = ("Pair", "Type", "Value",  "Fast Ema", "Slow Ema", "ATR")
 data = screener.get_data()
 positions = screener.get_positions(data)
 updates = screener.get_updates(data)
+dashboard_data = screener.get_dashboard_data(data, positions)
 
 print("----- END RETRIVING DATA -----")
 
@@ -23,7 +24,8 @@ def index():
         {'label':'Last Updates','class':'', 'href':'/updates', 'icon':'notifications'}]
 
     return render_template('index.html',
-                            menu = menu
+                            menu = menu,
+                            dashboard_data = dashboard_data
                             )
 
 @app.route('/positions')
@@ -39,7 +41,8 @@ def positions_def():
     position_items_pagination = positions[offset:offset+per_page] 
     total = len(positions) 
     pagination = Pagination(page=page, per_page=per_page, offset=offset, total=total) 
-    return render_template('positions.html', title = "Positions",
+    return render_template('positions.html', 
+                            title = "Positions",
                             headings = headings, 
                             pagination = pagination, 
                             items_pagination=position_items_pagination,

@@ -41,19 +41,20 @@ def get_positions(final_dataset):
     print("start reading positions")
     #open positions
     positions = []
+
     for key, value in final_dataset.items():
         status = position.get_status(value)
         if status != 1:
             continue
-
+        
         position_json = {'pair': key.split("-")[0], 
             'status': position.get_status_lable(status), 
             'ema_cross_price': utlities_sources.fun_format_4decimal(position.get_last_cross(value)[0]) ,
             'ema_cross_date': str(position.get_last_cross(value)[1]), 
             'current': utlities_sources.fun_format_4decimal(value.iloc[-1]['Close']),
-            'price_distance': utlities_sources.fun_format_4decimal( (value.iloc[-1]['Close']-position.get_last_cross(value)[0]) / position.get_last_cross(value)[0] * 100),
+            'price_distance': utlities_sources.fun_format_1decimal( (value.iloc[-1]['Close']-position.get_last_cross(value)[0]) / position.get_last_cross(value)[0] * 100),
             'last_update_at': str(value.iloc[-1]['Date']), 
-            'ema_distance': utlities_sources.fun_format_2decimal((value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100),
+            'ema_distance': utlities_sources.fun_format_1decimal((value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100),
             'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Fast-Ema']),
             'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema']),
             'special_exit': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema'] * sources.special_exit)
@@ -62,7 +63,7 @@ def get_positions(final_dataset):
         positions.append(position_json)
     print("end reading positions")
     #get last update   
-    return positions
+    return sorted(positions, key=lambda d: d['ema_cross_date'],reverse=True)
 
 def get_updates(final_dataset):
     print("start reading updates")
@@ -92,3 +93,24 @@ def get_updates(final_dataset):
     return sorted(updates, key=lambda d: d['date'],reverse=True) 
         
 
+def get_dashboard_data(final_dataset, positions):
+    print("start reading dashboard")
+    #get updates
+    sum_ema_distance = 0
+    for key, value in final_dataset.items():
+        ema_distance = (value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100
+        sum_ema_distance = sum_ema_distance + ema_distance
+
+
+    avg_ema_distance  = sum_ema_distance/len(final_dataset)
+    counter_bullish_pair = len(positions)
+    counter_total_pair = len(final_dataset)
+
+    dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_1decimal(avg_ema_distance), 
+                      'counter_bullish_pair': counter_bullish_pair, 
+                      'counter_total_pair':counter_total_pair
+                      }
+    
+    print("end reading dashboard")
+    return dashboard_json
+     

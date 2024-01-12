@@ -1,5 +1,9 @@
+format_1decimal = "{:.1f}"
 format_2decimal = "{:.2f}"
 format_4decimal = "{:.4f}"
+
+def fun_format_1decimal(value):
+    return format_1decimal.format(value)
 
 def fun_format_2decimal(value):
     return format_2decimal.format(value)
