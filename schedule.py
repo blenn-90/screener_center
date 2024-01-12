@@ -2,10 +2,26 @@ import time as tm
 from datetime import time, datetime, timedelta
 import src.utilities.noshare_static_data as noshare_static_data
 import src.utilities.get_data.kucoin_data as kucoin_data
-
 from kucoin.client import Client
 import sys
 import pandas as pd
+import requests
+
+def reload():
+    username = "blenn"
+    api_token = "b6f5dc7ab892b97f869b03f63af6717ea060a7b1"
+    domain_name = "blenn.pythonanywhere.com"
+
+    response = requests.post(
+        'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/{domain_name}/reload/'.format(
+            username=username, domain_name=domain_name
+        ),
+        headers={'Authorization': 'Token {token}'.format(token=api_token)}
+    )
+    if response.status_code == 200:
+        print('reloaded OK')
+    else:
+        print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
 
 def job():
     print("start update")
