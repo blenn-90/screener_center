@@ -3,4 +3,4 @@ atr_length = 40
 
 fast_ema = 76
 slow_ema = 284
-special_exit = 8
+special_exit = 4.5

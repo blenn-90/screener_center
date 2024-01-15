@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 print("----- START RETRIVING DATA -----")
 
-headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit")
-headings_signal = ("Pair", "Type", "Value",  "Fast Ema", "Slow Ema", "ATR")
+headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit (x4.5 Sma)")
+headings_signal = ("Pair", "Type", "Value",  "Fast Ema (76)", "Slow Ema (284)", "ATR", "Hardstop (x4 atr)")
 data = screener.get_data()
 positions = screener.get_positions(data)
 updates = screener.get_updates(data)

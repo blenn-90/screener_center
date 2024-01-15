@@ -85,7 +85,9 @@ def get_updates(final_dataset):
                     'date': str(value.iloc[i]['Date']), 
                     'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Fast-Ema']),
                     'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Slow-Ema']),
-                    'atr': utlities_sources.fun_format_4decimal(value.iloc[i]['atr'])}     
+                    'atr': utlities_sources.fun_format_1decimal((value.iloc[i]['atr'] / value.iloc[i]['Close']) * 100),
+                    'hardstop': utlities_sources.fun_format_4decimal(value.iloc[i]['Close'] - (value.iloc[i]['atr'] * 4)) 
+                }   
                 updates.append(update_json)
                
             i = i - 1
