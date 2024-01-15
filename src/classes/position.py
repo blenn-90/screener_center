@@ -27,6 +27,14 @@ def get_status(data):
         return 1
     return 0
 
+def get_status_by_day(data, days_ago):
+
+    last_fast_ema = data.iloc[days_ago]['Fast-Ema']
+    last_slow_ema = data.iloc[days_ago]['Slow-Ema']
+    if last_fast_ema > last_slow_ema:
+        return 1
+    return 0
+
 def get_last_cross(data):
     last_fast_ema = data.iloc[-1]['Fast-Ema']
     last_slow_ema = data.iloc[-1]['Slow-Ema']

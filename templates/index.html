@@ -31,7 +31,7 @@
                 <hr class="dark horizontal">
                 <div class="d-flex ">
                   <i class="material-icons text-sm my-auto me-1">schedule</i>
-                  <p class="mb-0 text-sm"> updated 4 min ago </p>
+                  <p class="mb-0 text-sm"> updated Today </p>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
                 <hr class="dark horizontal">
                 <div class="d-flex ">
                   <i class="material-icons text-sm my-auto me-1">schedule</i>
-                  <p class="mb-0 text-sm"> updated 4 min ago </p>
+                  <p class="mb-0 text-sm"> updated Today </p>
                 </div>
               </div>
             </div>
@@ -62,6 +62,10 @@
     </div>
   </div>
 </div>
+
+<meta name="ctx2-data" content="{{ dashboard_data.list_bullish_pair_by_week }}">
+<meta name="ctx3-data" content="{{ dashboard_data.list_avg_ema_distance_by_week }}">
+
 <script src="static/assets/js/core/popper.min.js"></script>
 <script src="static/assets/js/core/bootstrap.min.js"></script>
 <script src="static/assets/js/plugins/perfect-scrollbar.min.js"></script>
@@ -69,13 +73,14 @@
 <script src="static/assets/js/plugins/chartjs.min.js"></script>
 <script>
 var ctx2 = document.getElementById("chart-line").getContext("2d");
+var ctx2_data = document.querySelector('meta[name="ctx2-data"]').content
 
 new Chart(ctx2, {
   type: "line",
   data: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["6 week ago", "5 week ago", "4 week ago", "3 week ago", "2 week ago", "1 week ago", "Now"],
     datasets: [{
-      label: "Mobile apps",
+      label: "Bullish pairs",
       tension: 0,
       borderWidth: 0,
       pointRadius: 5,
@@ -86,7 +91,7 @@ new Chart(ctx2, {
       borderWidth: 4,
       backgroundColor: "transparent",
       fill: true,
-      data: [5, 4, 30, 32, 50, 35, 20, 23, 50],
+      data: JSON.parse(ctx2_data),
       maxBarThickness: 6
 
     }],
@@ -152,13 +157,14 @@ new Chart(ctx2, {
 });
 
 var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
+var ctx3_data = document.querySelector('meta[name="ctx3-data"]').content
 
 new Chart(ctx3, {
   type: "line",
   data: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: ["6 week ago", "5 week ago", "4 week ago", "3 week ago", "2 week ago", "1 week ago", "Now"],
     datasets: [{
-      label: "Mobile apps",
+      label: "Avg ema distance",
       tension: 0,
       borderWidth: 0,
       pointRadius: 5,
@@ -168,7 +174,7 @@ new Chart(ctx3, {
       borderWidth: 4,
       backgroundColor: "transparent",
       fill: true,
-      data: [5, 4, -1, 2, 5, 2.5, 4, 2.3, 5],
+      data: JSON.parse(ctx3_data),
       maxBarThickness: 6
 
     }],

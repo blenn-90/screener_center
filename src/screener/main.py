@@ -5,6 +5,7 @@ import src.utilities.sources as utlities_sources
 import src.utilities.noshare_static_data as get_noshare_data 
 import src.utilities.get_data.exchange_data as kucoin_data
 import src.classes.position as position
+import pandas as pd
 from os import listdir
 from os.path import isfile, join
 import sys
@@ -98,19 +99,100 @@ def get_updates(final_dataset):
 def get_dashboard_data(final_dataset, positions):
     print("start reading dashboard")
     #get updates
-    sum_ema_distance = 0
-    for key, value in final_dataset.items():
-        ema_distance = (value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100
-        sum_ema_distance = sum_ema_distance + ema_distance
+    
+    counter_bullish_pair_1_week_ago = 0
+    counter_bullish_pair_2_week_ago = 0
+    counter_bullish_pair_3_week_ago = 0
+    counter_bullish_pair_4_week_ago = 0
+    counter_bullish_pair_5_week_ago = 0
+    counter_bullish_pair_6_week_ago = 0
 
+    sum_ema_distance = 0
+    sum_ema_distance_1_week_ago = 0
+    sum_ema_distance_2_week_ago = 0
+    sum_ema_distance_3_week_ago = 0
+    sum_ema_distance_4_week_ago = 0
+    sum_ema_distance_5_week_ago = 0
+    sum_ema_distance_6_week_ago = 0
+
+    for key, value in final_dataset.items():
+        status_1_week_ago = position.get_status_by_day(value, -8)
+        status_2_week_ago = position.get_status_by_day(value, -15)
+        status_3_week_ago = position.get_status_by_day(value, -22)
+        status_4_week_ago = position.get_status_by_day(value, -29)
+        status_5_week_ago = position.get_status_by_day(value, -36)
+        status_6_week_ago = position.get_status_by_day(value, -43)
+
+        if status_1_week_ago == 1:
+            counter_bullish_pair_1_week_ago = counter_bullish_pair_1_week_ago + 1 
+        
+        if status_2_week_ago == 1:
+            counter_bullish_pair_2_week_ago = counter_bullish_pair_2_week_ago + 1 
+        
+        if status_3_week_ago == 1:
+            counter_bullish_pair_3_week_ago = counter_bullish_pair_3_week_ago + 1
+
+        if status_4_week_ago == 1:
+            counter_bullish_pair_4_week_ago = counter_bullish_pair_4_week_ago + 1 
+        
+        if status_5_week_ago == 1:
+            counter_bullish_pair_5_week_ago = counter_bullish_pair_5_week_ago + 1
+
+        if status_6_week_ago == 1:
+            counter_bullish_pair_6_week_ago = counter_bullish_pair_6_week_ago + 1 
+
+        if not pd.isna(value.iloc[-1]['Slow-Ema']):
+            ema_distance = (value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100
+            sum_ema_distance = sum_ema_distance + ema_distance
+        if not pd.isna(value.iloc[-8]['Slow-Ema']):
+            ema_distance_1_week_ago = (value.iloc[-8]['Fast-Ema'] - value.iloc[-8]['Slow-Ema']) / value.iloc[-8]['Slow-Ema'] * 100
+            sum_ema_distance_1_week_ago = sum_ema_distance_1_week_ago + ema_distance_1_week_ago
+        if not pd.isna(value.iloc[-15]['Slow-Ema']):
+            ema_distance_2_week_ago = (value.iloc[-15]['Fast-Ema'] - value.iloc[-15]['Slow-Ema']) / value.iloc[-15]['Slow-Ema'] * 100
+            sum_ema_distance_2_week_ago = sum_ema_distance_2_week_ago + ema_distance_2_week_ago
+        if not pd.isna(value.iloc[-22]['Slow-Ema']):
+            ema_distance_3_week_ago = (value.iloc[-22]['Fast-Ema'] - value.iloc[-22]['Slow-Ema']) / value.iloc[-22]['Slow-Ema'] * 100
+            sum_ema_distance_3_week_ago = sum_ema_distance_3_week_ago + ema_distance_3_week_ago
+        if not pd.isna(value.iloc[-29]['Slow-Ema']):
+            ema_distance_4_week_ago = (value.iloc[-29]['Fast-Ema'] - value.iloc[-29]['Slow-Ema']) / value.iloc[-29]['Slow-Ema'] * 100
+            sum_ema_distance_4_week_ago = sum_ema_distance_4_week_ago + ema_distance_4_week_ago
+        if not pd.isna(value.iloc[-36]['Slow-Ema']):
+            ema_distance_5_week_ago = (value.iloc[-36]['Fast-Ema'] - value.iloc[-36]['Slow-Ema']) / value.iloc[-36]['Slow-Ema'] * 100
+            sum_ema_distance_5_week_ago = sum_ema_distance_5_week_ago + ema_distance_5_week_ago
+        if not pd.isna(value.iloc[-43]['Slow-Ema']):
+            ema_distance_6_week_ago = (value.iloc[-43]['Fast-Ema'] - value.iloc[-43]['Slow-Ema']) / value.iloc[-43]['Slow-Ema'] * 100
+            sum_ema_distance_6_week_ago = sum_ema_distance_6_week_ago + ema_distance_6_week_ago
 
     avg_ema_distance  = sum_ema_distance/len(final_dataset)
+    avg_ema_distance_1_week_ago = sum_ema_distance_1_week_ago / len(final_dataset)
+    avg_ema_distance_2_week_ago = sum_ema_distance_2_week_ago / len(final_dataset)
+    avg_ema_distance_3_week_ago = sum_ema_distance_3_week_ago / len(final_dataset)
+    avg_ema_distance_4_week_ago = sum_ema_distance_4_week_ago / len(final_dataset)
+    avg_ema_distance_5_week_ago = sum_ema_distance_5_week_ago / len(final_dataset)
+    avg_ema_distance_6_week_ago = sum_ema_distance_6_week_ago / len(final_dataset)
+
     counter_bullish_pair = len(positions)
     counter_total_pair = len(final_dataset)
 
-    dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_1decimal(avg_ema_distance), 
+    dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_2decimal(avg_ema_distance), 
                       'counter_bullish_pair': counter_bullish_pair, 
-                      'counter_total_pair':counter_total_pair
+                      'counter_total_pair':counter_total_pair,
+                      'list_bullish_pair_by_week': [counter_bullish_pair_6_week_ago, 
+                                                    counter_bullish_pair_5_week_ago, 
+                                                    counter_bullish_pair_4_week_ago, 
+                                                    counter_bullish_pair_3_week_ago, 
+                                                    counter_bullish_pair_2_week_ago, 
+                                                    counter_bullish_pair_1_week_ago, 
+                                                    counter_bullish_pair
+                                                    ],
+                      'list_avg_ema_distance_by_week': [avg_ema_distance_6_week_ago, 
+                                                    avg_ema_distance_5_week_ago, 
+                                                    avg_ema_distance_4_week_ago, 
+                                                    avg_ema_distance_3_week_ago, 
+                                                    avg_ema_distance_2_week_ago, 
+                                                    avg_ema_distance_1_week_ago,
+                                                    avg_ema_distance
+                                                    ]
                       }
     
     print("end reading dashboard")
