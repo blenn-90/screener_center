@@ -6,7 +6,7 @@ def i_ema(data, ema_period):
     ema =  ta.ema(close = data.Close.s, length = ema_period)
     return ema.to_numpy().T
 
-#ema calculator used in the strategies
+#ema calculator used in the strategies for different dataframe
 def i_ema_slow_v2(data, ema_period):
     ema =  ta.ema(close = data.Close, length = ema_period)
     if ema is not None:

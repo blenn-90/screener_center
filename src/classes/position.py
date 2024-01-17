@@ -18,15 +18,15 @@ def create_pair_data(pair, dataset, status, last_emacross_price, last_emacross_d
             last_emacross_price,
             last_emacross_date)
 
-
+#identify if a last data of pair have a bullish or bearish ema cross 1 = bullish, 0 = bearish
 def get_status(data):
-
     last_fast_ema = data.iloc[-1]['Fast-Ema']
     last_slow_ema = data.iloc[-1]['Slow-Ema']
     if last_fast_ema > last_slow_ema:
         return 1
     return 0
 
+#identify if a pair have a bullish or bearish ema cross 1 = bullish, 0 = bearish giving a day
 def get_status_by_day(data, days_ago):
 
     last_fast_ema = data.iloc[days_ago]['Fast-Ema']
@@ -35,6 +35,7 @@ def get_status_by_day(data, days_ago):
         return 1
     return 0
 
+#get last ema cross value and date of pair
 def get_last_cross(data):
     last_fast_ema = data.iloc[-1]['Fast-Ema']
     last_slow_ema = data.iloc[-1]['Slow-Ema']
@@ -51,11 +52,13 @@ def get_last_cross(data):
 
     return [data.iloc[i]['Close'], data.iloc[i]['Date']]
 
+#return label of a status 
 def get_status_lable(status):
     if status == 1:
         return 'Long'
     return 'Short'
 
+#check if a ema cross is bearish or bullish 1 = bulls
 def check_cross_by_candle(data, i):
     i_fast_ema = data.iloc[i]['Fast-Ema']
     i_slow_ema = data.iloc[i]['Slow-Ema']
@@ -67,13 +70,14 @@ def check_cross_by_candle(data, i):
     if i_fast_ema > i_slow_ema and i_previous_fast_ema < i_previous_slow_ema:
         return 1
     
-    #bullish cross on this candle
+    #bearish cross on this candle
     if i_fast_ema < i_slow_ema and i_previous_fast_ema > i_previous_slow_ema:
         return -1
     
     #no cross
     return 0
 
+#label last ema cross in updates page
 def get_update_type(type):
     label = ''
     if type == 1:
@@ -83,6 +87,7 @@ def get_update_type(type):
     
     return label
 
+#color last ema cross in updates page
 def get_update_type_color(type):
     label = ''
     if type == 1:

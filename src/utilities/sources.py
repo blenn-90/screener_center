@@ -1,20 +1,8 @@
-format_1decimal = "{:.1f}"
-format_2decimal = "{:.2f}"
-format_4decimal = "{:.4f}"
-
-def fun_format_1decimal(value):
-    return format_1decimal.format(value)
-
-def fun_format_2decimal(value):
-    return format_2decimal.format(value)
-
-def fun_format_4decimal(value):
-    return format_4decimal.format(value)
-
-def get_change_perc(current, previous):
-    if current == previous:
-        return 0
-    try:
-        return (abs(current - previous) / previous) * 100.0
-    except ZeroDivisionError:
-        return float('inf')
+#atr_length number of bars used to calculate the atr
+atr_length = 40
+#fast ema used to calculate positions and updates
+fast_ema = 76
+#slow ema used to calculate positions and updates
+slow_ema = 284
+#special_exit multipler used to calculate positions and updates
+special_exit = 4.5

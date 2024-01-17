@@ -4,18 +4,22 @@ import src.screener.main as screener
 from flask_paginate import Pagination, get_page_parameter
 
 app = Flask(__name__)
-
-print("----- START RETRIVING DATA -----")
-
+print("----- WEB APP | START -----")
+#label position table
 headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit (x4.5 Sma)")
+#label updates table
 headings_signal = ("Pair", "Type", "Value",  "Fast Ema (76)", "Slow Ema (284)", "ATR", "Hardstop (x4 atr)")
+#read data from folder
 data = screener.get_data()
+#calculate positions
 positions = screener.get_positions(data)
+#calculate updates
 updates = screener.get_updates(data)
+#calculate dashboard data
 dashboard_data = screener.get_dashboard_data(data, positions)
+print("-----  WEB APP | END -----")
 
-print("----- END RETRIVING DATA -----")
-
+#dashboard
 @app.route('/')
 @app.route('/index')
 def index():
@@ -27,7 +31,7 @@ def index():
                             menu = menu,
                             dashboard_data = dashboard_data
                             )
-
+#position page
 @app.route('/positions')
 def positions_def():
     menu = [{'label':'Dashboard','class':'', 'href':'/index', 'icon':'dashboard'}, 
@@ -48,7 +52,7 @@ def positions_def():
                             items_pagination=position_items_pagination,
                             menu = menu
                             )
-
+#updates page
 @app.route('/updates')
 def updates_def():
     menu = [{'label':'Dashboard','class':'', 'href':'/index', 'icon':'dashboard'}, 
@@ -69,6 +73,7 @@ def updates_def():
                             menu = menu
                             )
 
+#download tradingview list in position page
 @app.route('/export_tradingview')
 def download():
     final_txt = "" 
