@@ -1,7 +1,7 @@
 import time as tm
 from datetime import time, datetime, timedelta
-import src.utilities.noshare_static_data as noshare_static_data
-import src.utilities.get_data.kucoin_data as kucoin_data
+import src.utilities.static_data_unsharable as static_data_unsharable
+import src.utilities.get_data.exchange_data as kucoin_data
 from kucoin.client import Client
 import sys
 import pandas as pd
@@ -10,16 +10,12 @@ import requests
 #function used to restart the webapp process
 def reload():
     print("---PYTHON ANYWHERE APP RELOAD | START---")
-    #api access data
-    username = "blenn"
-    api_token = "b6f5dc7ab892b97f869b03f63af6717ea060a7b1"
-    domain_name = "blenn.pythonanywhere.com"
     #url to reload the webapp
     response = requests.post(
         'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/{domain_name}/reload/'.format(
-            username=username, domain_name=domain_name
+            username=static_data_unsharable.username, domain_name=static_data_unsharable.domain_name
         ),
-        headers={'Authorization': 'Token {token}'.format(token=api_token)}
+        headers={'Authorization': 'Token {token}'.format(token=static_data_unsharable.api_token)}
     )
     #response
     if response.status_code == 200:
@@ -35,13 +31,15 @@ def job():
     #iterating every pair ticker
     for pair in usdt_tickers:
         #create a connection to kucoin api
-        client = Client(noshare_static_data.kc_apikey, noshare_static_data.kc_secret, noshare_static_data.kc_passphrase)
+        client = Client(static_data_unsharable.kc_apikey, static_data_unsharable.kc_secret, static_data_unsharable.kc_passphrase)
         #path to data folder
-        interval = '4hour'
-        timeframe = "kucoin_4h"
-        path = sys.path[noshare_static_data.project_sys_path_position] + "\\data"
+        if static_data_unsharable.project_is_live==1: 
+            path = static_data_unsharable.project_sys_path_live
+        else: 
+            path = sys.path[static_data_unsharable.project_sys_path_position] + "\\data"
+
         #get the pair data
-        data = kucoin_data.read_csv_data(path, timeframe, pair+".csv")
+        data = kucoin_data.read_csv_data(path, "kucoin_4h", pair+".csv")
 
         #create finals var
         final_hist_df = pd.DataFrame(columns=['Date', 'Open', 'Close', 'High', 'Low'])
@@ -58,7 +56,7 @@ def job():
             #get last 6 months of data if there are no data
             last_data = ts - 17280000
         #get data
-        historical = client.get_kline_data( pair, kline_type=interval, start=int(last_data) + 14400, end=int(ts))
+        historical = client.get_kline_data( pair, kline_type='4hour', start=int(last_data) + 14400, end=int(ts))
 
         if not historical:
             print("---KUCOIN DATA UPDATE |" + pair + " no data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)) + " ---")
@@ -78,9 +76,15 @@ def job():
             final_hist_df = (final_hist_df.copy() if hist_df.empty else hist_df.copy() if final_hist_df.empty else pd.concat([final_hist_df, hist_df])) # if both DataFrames non empty)
         final_hist_df.sort_values(by='Date', inplace = True)
         #merging data is file already exist
+        #path to data folder
+        path_csv = ""
+        if static_data_unsharable.project_is_live==1: 
+            path_csv = static_data_unsharable.project_sys_path_live + "/kucoin_4h/"+pair+".csv"
+        else: 
+            path_csv = sys.path[static_data_unsharable.project_sys_path_position] + "\\data\\kucoin_4h\\"+pair+".csv" 
         if not data.empty:
             temp_df = pd.concat([data, final_hist_df])
-            temp_df.to_csv(sys.path[noshare_static_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv")
+            temp_df.to_csv(path_csv)
         #creating new file
         else:
-            final_hist_df.to_csv(sys.path[noshare_static_data.project_sys_path_position]+ "\\data\\kucoin_4h\\"+pair+".csv") 
+            final_hist_df.to_csv(path_csv) 

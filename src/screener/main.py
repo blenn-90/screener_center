@@ -1,8 +1,8 @@
 import src.indicator.i_atr as indicator_atr
 import src.indicator.i_ema as indicator_ema
-import src.utilities.sources as sources
+import src.utilities.static_data as static_data
 import src.utilities.formatting as utlities_sources
-import src.utilities.noshare_static_data as get_noshare_data 
+import src.utilities.static_data_unsharable as static_data_unsharable 
 import src.utilities.get_data.exchange_data as kucoin_data
 import src.classes.position as position
 import pandas as pd
@@ -15,7 +15,11 @@ def get_data():
     print("---CALCULATE DATA | START---")
     # retrive all out_of_sample files
     timeframe = "kucoin_4h"
-    path = sys.path[get_noshare_data.project_sys_path_position] + "\\data"
+    if static_data_unsharable.project_is_live==1: 
+        path = static_data_unsharable.project_sys_path_live
+    else: 
+        path = sys.path[static_data_unsharable.project_sys_path_position] + "\\data"
+
     data_file_set = [f for f in listdir(path + "\\" + timeframe) if isfile(join(path + "\\" + timeframe, f))]
     final_dataset = {}
     #iterate every fille and add it to the final list of dataframes, calculating atr and emas
@@ -25,9 +29,9 @@ def get_data():
         #filter time range
         filter_data = data[ (data.index > "2023-07-01") & (data.index < "2024-02-01")]
         #calculate atr and emas
-        atr_df = indicator_atr.i_atr_v2(filter_data, sources.atr_length)
-        ema_fast_df = indicator_ema.i_ema_fast_v2(filter_data, sources.fast_ema)
-        ema_slow_df = indicator_ema.i_ema_slow_v2(filter_data, sources.slow_ema) 
+        atr_df = indicator_atr.i_atr_v2(filter_data, static_data.atr_length)
+        ema_fast_df = indicator_ema.i_ema_fast_v2(filter_data, static_data.fast_ema)
+        ema_slow_df = indicator_ema.i_ema_slow_v2(filter_data, static_data.slow_ema) 
         #merge all the data in 1 dataframe
         if not atr_df.empty and not ema_fast_df.empty and not ema_slow_df.empty:
             temp_df = atr_df.merge(ema_fast_df, how='left', on='Date')
@@ -58,7 +62,7 @@ def get_positions(final_dataset):
             'ema_distance': utlities_sources.fun_format_1decimal((value.iloc[-1]['Fast-Ema'] - value.iloc[-1]['Slow-Ema']) / value.iloc[-1]['Slow-Ema'] * 100),
             'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Fast-Ema']),
             'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema']),
-            'special_exit': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema'] * sources.special_exit)
+            'special_exit': utlities_sources.fun_format_4decimal(value.iloc[-1]['Slow-Ema'] * static_data.special_exit)
             }
         
         positions.append(position_json)

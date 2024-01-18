@@ -1,10 +1,6 @@
-import sys
 import pandas as pd
-import src.utilities.noshare_static_data as noshare_data
+import src.utilities.static_data_unsharable as noshare_data
 from kucoin.client import Client
-import time
-from datetime import datetime
-import src.classes.pair_data as pair_data
 from os import listdir
 from os.path import isfile, join
 from pathlib import Path
@@ -24,7 +20,8 @@ def get_pairs():
 
 #get data saved in a path and return dataframe of these pair
 def read_csv_data(path, timeframe, filename):
-    final_path = path + "\\" + timeframe + "\\" + filename
+    final_path = path + noshare_data.project_separator_path + timeframe + noshare_data.project_separator_path + filename
+
     my_file = Path(final_path)
     if my_file.is_file():
         #reading csv file
