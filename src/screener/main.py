@@ -9,18 +9,20 @@ import pandas as pd
 from os import listdir
 from os.path import isfile, join
 import sys
+from pathlib import Path
 
 #read all excel and calculate dataframes
 def get_data():
     print("---CALCULATE DATA | START---")
+
     # retrive all out_of_sample files
     timeframe = "kucoin_4h"
     if static_data_unsharable.project_is_live==1: 
         path = static_data_unsharable.project_sys_path_live
     else: 
-        path = sys.path[static_data_unsharable.project_sys_path_position] + "\\data"
-
-    data_file_set = [f for f in listdir(path + "\\" + timeframe) if isfile(join(path + "\\" + timeframe, f))]
+        path = sys.path[static_data_unsharable.project_sys_path_position] + static_data_unsharable.project_separator_path + "data"
+    
+    data_file_set = [f for f in listdir(path + static_data_unsharable.project_separator_path + timeframe) if isfile(join(path + static_data_unsharable.project_separator_path + timeframe, f))]
     final_dataset = {}
     #iterate every fille and add it to the final list of dataframes, calculating atr and emas
     for data_file in data_file_set:
@@ -45,6 +47,7 @@ def get_data():
 #get all positions
 def get_positions(final_dataset):
     print("---CALCULATE POSITIONS | START---")
+
     #open positions
     positions = []
     for key, value in final_dataset.items():
@@ -72,10 +75,29 @@ def get_positions(final_dataset):
 
 def get_updates(final_dataset):
     print("---CALCULATE LAST UPDATES | START---")
+    if static_data_unsharable.project_is_live==1: 
+        path = static_data_unsharable.project_sys_path_live
+    else: 
+        path = sys.path[static_data_unsharable.project_sys_path_position] + static_data_unsharable.project_separator_path + "data"
+    
+    #read cycles data file
+    cycle_data_df = pd.read_csv(
+            path + static_data_unsharable.project_separator_path +  "cycles_data" + static_data_unsharable.project_separator_path + "cycles_data.csv",
+            usecols=[0,1],
+            names=["pair",'born_at_cycle'],
+            skiprows=[0]
+        )
     #get updates
     updates = []
     for key, value in final_dataset.items():
         #analyze 1 week of data on any pair
+        
+        #setting cycle data, if no data found set it as new coin
+        if cycle_data_df[cycle_data_df.pair==Path(key).stem].empty: 
+            cycle = 4
+        else:
+            cycle = cycle_data_df[cycle_data_df.pair==Path(key).stem].born_at_cycle.item()
+
         number_of_candle_4h_tba = -6*14
         i = -1
         while i > number_of_candle_4h_tba:
@@ -90,7 +112,8 @@ def get_updates(final_dataset):
                     'fast_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Fast-Ema']),
                     'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Slow-Ema']),
                     'atr': utlities_sources.fun_format_1decimal((value.iloc[i]['atr'] / value.iloc[i]['Close']) * 100),
-                    'hardstop': utlities_sources.fun_format_4decimal(value.iloc[i]['Close'] - (value.iloc[i]['atr'] * 4)) 
+                    'hardstop': utlities_sources.fun_format_4decimal(value.iloc[i]['Close'] - (value.iloc[i]['atr'] * 4)) ,
+                    'cycle' : int(cycle)
                 }   
                 updates.append(update_json)
                

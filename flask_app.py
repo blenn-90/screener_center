@@ -8,7 +8,7 @@ print("----- WEB APP | START -----")
 #label position table
 headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit (x4.5 Sma)")
 #label updates table
-headings_signal = ("Pair", "Type", "Value",  "Fast Ema (76)", "Slow Ema (284)", "ATR", "Hardstop (x4 atr)")
+headings_signal = ("Pair", "Type", "Value",  "Fast Ema (76)", "Slow Ema (284)", "ATR", "Hardstop (x4 atr)", "Born at cycle")
 #read data from folder
 data = screener.get_data()
 #calculate positions

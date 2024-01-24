@@ -36,7 +36,7 @@ def job():
         if static_data_unsharable.project_is_live==1: 
             path = static_data_unsharable.project_sys_path_live
         else: 
-            path = sys.path[static_data_unsharable.project_sys_path_position] + "\\data"
+            path = sys.path[static_data_unsharable.project_sys_path_position] + static_data_unsharable.project_separator_path + "data"
 
         #get the pair data
         data = kucoin_data.read_csv_data(path, "kucoin_4h", pair+".csv")
