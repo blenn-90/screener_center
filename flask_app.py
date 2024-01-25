@@ -6,9 +6,9 @@ from flask_paginate import Pagination, get_page_parameter
 app = Flask(__name__)
 print("----- WEB APP | START -----")
 #label position table
-headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit (x4.5 Sma)")
+headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", "Special Exit (x5 SEma)")
 #label updates table
-headings_signal = ("Pair", "Type", "Value",  "Fast Ema (76)", "Slow Ema (284)", "ATR", "Hardstop (x4 atr)", "Born at cycle")
+headings_signal = ("Pair", "Type", "Value",  "Fast Ema (72)", "Slow Ema (256)", "ATR", "Hardstop (x4 atr)", "Born at cycle")
 #read data from folder
 data = screener.get_data()
 #calculate positions
