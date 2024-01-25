@@ -10,6 +10,7 @@ from os import listdir
 from os.path import isfile, join
 import sys
 from pathlib import Path
+import math
 
 #read all excel and calculate dataframes
 def get_data():
@@ -98,6 +99,11 @@ def get_updates(final_dataset):
         else:
             cycle = cycle_data_df[cycle_data_df.pair==Path(key).stem].born_at_cycle.item()
 
+        if math.isnan(cycle):
+            cycle_text = ""
+        else:
+            cycle_text = int(cycle)
+
         number_of_candle_4h_tba = -6*14
         i = -1
         while i > number_of_candle_4h_tba:
@@ -113,7 +119,7 @@ def get_updates(final_dataset):
                     'slow_ema': utlities_sources.fun_format_4decimal(value.iloc[i]['Slow-Ema']),
                     'atr': utlities_sources.fun_format_1decimal((value.iloc[i]['atr'] / value.iloc[i]['Close']) * 100),
                     'hardstop': utlities_sources.fun_format_4decimal(value.iloc[i]['Close'] - (value.iloc[i]['atr'] * 4)) ,
-                    'cycle' : int(cycle)
+                    'cycle' : cycle_text
                 }   
                 updates.append(update_json)
                
