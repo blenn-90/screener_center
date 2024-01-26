@@ -88,5 +88,6 @@ def job():
         #creating new file
         else:
             final_hist_df.to_csv(path_csv) 
+    reload()
 
 job()

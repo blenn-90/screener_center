@@ -210,6 +210,7 @@ def get_dashboard_data(final_dataset, positions):
     dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_2decimal(avg_ema_distance), 
                       'counter_bullish_pair': counter_bullish_pair, 
                       'counter_total_pair':counter_total_pair,
+                      'counter_bullish_pair_perc': utlities_sources.fun_format_2decimal(counter_bullish_pair / counter_total_pair * 100),
                       'list_bullish_pair_by_week': [counter_bullish_pair_6_week_ago, 
                                                     counter_bullish_pair_5_week_ago, 
                                                     counter_bullish_pair_4_week_ago, 
