@@ -4,6 +4,7 @@ import src.utilities.static_data as static_data
 import src.utilities.formatting as utlities_sources
 import src.utilities.static_data_unsharable as static_data_unsharable 
 import src.utilities.get_data.exchange_data as kucoin_data
+import src.utilities.telegram as telegram
 import src.classes.position as position
 import pandas as pd
 from os import listdir
@@ -11,6 +12,7 @@ from os.path import isfile, join
 import sys
 from pathlib import Path
 import math
+from datetime import datetime, timedelta
 
 #read all excel and calculate dataframes
 def get_data():
@@ -122,6 +124,11 @@ def get_updates(final_dataset):
                     'cycle' : cycle_text
                 }   
                 updates.append(update_json)
+                #telegram bot notification
+                now = datetime.now()
+                if now-timedelta(hours=2) <= value.iloc[i]['Date'] <= now:
+                    message = key.split("-")[0] + " had a " + position.get_update_type(cross_type) + ' at ' + value.iloc[i]['Date'].strftime('%m %d %y %H:%M:%S')
+                    telegram.send_message(message)
                
             i = i - 1
     print("---CALCULATE LAST UPDATES | END---")
