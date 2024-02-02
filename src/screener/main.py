@@ -30,7 +30,7 @@ def get_data():
         #retrive data for the current pair
         data = kucoin_data.read_csv_data(path, timeframe, data_file)
         #filter time range
-        filter_data = data[ (data.index > "2023-07-01") & (data.index < "2024-02-01")]
+        filter_data = data[ (data.index > "2023-07-01") & (data.index < "2025-02-01")]
         #calculate atr and emas
         atr_df = indicator_atr.i_atr_v2(filter_data, static_data.atr_length)
         ema_fast_df = indicator_ema.i_ema_fast_v2(filter_data, static_data.fast_ema)

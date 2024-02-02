@@ -51,18 +51,17 @@ def job():
         ts = tm.time()
         if not data.empty:
             #adding few minutes to the last update to get from the next candle
-            last_data= datetime.timestamp(data.index[-1]) + 14400
+            last_data= datetime.timestamp(data.index[-1]) + 1440
         else:
             #get last 6 months of data if there are no data
             last_data = ts - 17280000
         #get data
-        historical = client.get_kline_data( pair, kline_type='4hour', start=int(last_data) + 14400, end=int(ts))
+        historical = client.get_kline_data( pair, kline_type='4hour', start=int(last_data), end=int(ts))
 
         if not historical:
             print("---KUCOIN DATA UPDATE |" + pair + " no data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)) + " ---")
         else:
             print("---KUCOIN DATA UPDATE |" + pair + " found data between " +  str(datetime.fromtimestamp(last_data)) +" and " + str(datetime.fromtimestamp(ts)) + " ---")
-            
             #saving data
             hist_df = pd.DataFrame(historical)
             hist_df.columns = ['Date', 'Open', 'Close', 'High', 'Low', 'Amount', 'Volume']
@@ -72,9 +71,11 @@ def job():
             hist_df = hist_df.drop(columns=['Amount','Volume'])
             numeric_columns = ['Open', 'Close', 'High', 'Low']
             hist_df[numeric_columns] = hist_df[numeric_columns].apply(pd.to_numeric, axis=1)
+            print(historical)
             #hist_df['Date'] = hist_df['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
             final_hist_df = (final_hist_df.copy() if hist_df.empty else hist_df.copy() if final_hist_df.empty else pd.concat([final_hist_df, hist_df])) # if both DataFrames non empty)
         final_hist_df.sort_values(by='Date', inplace = True)
+
         #merging data is file already exist
         #path to data folder
         path_csv = ""
@@ -84,10 +85,11 @@ def job():
             path_csv = sys.path[static_data_unsharable.project_sys_path_position] + "\\data\\kucoin_4h\\"+pair+".csv" 
         if not data.empty:
             temp_df = pd.concat([data, final_hist_df])
+            temp_df = temp_df[~temp_df.index.duplicated(keep='first')]
             temp_df.to_csv(path_csv)
         #creating new file
         else:
             final_hist_df.to_csv(path_csv) 
-    reload()
+    #reload()
 
 job()

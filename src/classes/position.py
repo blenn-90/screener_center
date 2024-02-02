@@ -50,7 +50,7 @@ def get_last_cross(data):
         while data.iloc[i]['Fast-Ema'] < data.iloc[i]['Slow-Ema']:
             i -= 1
 
-    return [data.iloc[i]['Close'], data.iloc[i]['Date']]
+    return [data.iloc[i+1]['Close'], data.iloc[i+1]['Date']]
 
 #return label of a status 
 def get_status_lable(status):
