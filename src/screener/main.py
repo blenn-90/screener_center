@@ -129,6 +129,8 @@ def get_updates(final_dataset):
                 if now-timedelta(hours=2) <= value.iloc[i]['Date'] <= now:
                     message = key.split("-")[0] + " had a " + position.get_update_type(cross_type) + ' at ' + value.iloc[i]['Date'].strftime('%m %d %y %H:%M:%S')
                     telegram.send_message(message)
+                    telegram.send_message_chris(message)
+                    
                
             i = i - 1
     print("---CALCULATE LAST UPDATES | END---")
@@ -213,6 +215,11 @@ def get_dashboard_data(final_dataset, positions):
 
     counter_bullish_pair = len(positions)
     counter_total_pair = len(final_dataset)
+
+    message = "Market Breath: Currently "+ utlities_sources.fun_format_2decimal(counter_bullish_pair / counter_total_pair * 100) +"% Bullish Cross on "+str(counter_total_pair)+" Total Pair"
+    telegram.send_message_chris(message)
+    message = "Average Ema Distance: Currently "+str(avg_ema_distance)+ "% on "+str(counter_total_pair)+ " Total Pair "
+    telegram.send_message_chris(message)
 
     dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_2decimal(avg_ema_distance), 
                       'counter_bullish_pair': counter_bullish_pair, 
