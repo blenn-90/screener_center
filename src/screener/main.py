@@ -216,9 +216,9 @@ def get_dashboard_data(final_dataset, positions):
     counter_bullish_pair = len(positions)
     counter_total_pair = len(final_dataset)
 
-    message = "Market Breath: Currently "+ utlities_sources.fun_format_2decimal(counter_bullish_pair / counter_total_pair * 100) +"% Bullish Cross on "+str(counter_total_pair)+" Total Pair"
+    message = "Market Breath Currently \\"+ str(utlities_sources.fun_format_2decimal(counter_bullish_pair / counter_total_pair * 100)).replace(".", "\\.") +"% Bullish Cross on \\"+str(counter_total_pair)+" Total Pair"
     telegram.send_message_chris(message)
-    message = "Average Ema Distance: Currently "+str(avg_ema_distance)+ "% on "+str(counter_total_pair)+ " Total Pair "
+    message = "Average Ema Distance Currently "+str(utlities_sources.fun_format_2decimal(avg_ema_distance)).replace(".", "\\.").replace("-", "\\-")+ "% on "+str(counter_total_pair).replace("-", "\\-")+ " Total Pair "
     telegram.send_message_chris(message)
 
     dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_2decimal(avg_ema_distance), 
