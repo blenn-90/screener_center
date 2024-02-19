@@ -1,0 +1,132 @@
+{# templates/updates.html #}
+
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container-fluid py-4">
+    <div class="row" style="margin-bottom:10px">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="row">
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">account_balance</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Account balance</h6>
+                    <span class="text-xs">19/02/2024</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{current_balance}}$</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">account_balance_wallet</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Starting Balance</h6>
+                    <span class="text-xs">01/02/2024</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{starting_balance}}$</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">timeline</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Open Trades</h6>
+                    <span class="text-xs">{{open_trades}}</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{unrealized}}%</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">history</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Closed Trades</h6>
+                    <span class="text-xs">{{closed_trades}}</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{realized}}%</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">Portfolio</h6>
+            </div>
+          </div>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      {% for header in headings_portfolio %}
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ header }}</th>
+                      {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for portfolio in items_pagination %}
+                    <tr>
+                      <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.date }}</p></td>
+                      <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.pair }}</p></td>
+                      <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.exchange }}</p></td>
+                      <td class="align-middle text-sm">{{ portfolio.status }}</td>
+                      <td class="">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.buy_price }}</p>
+                      </td>
+                      <td class="">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.market_price }}</p>
+                      </td>
+                      <td class="">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.closing_price }}</p>
+                      </td>
+                      <td class="">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.risk }}%</p>
+                      </td>
+                      <td class="">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.result }}%</p>
+                      </td>
+                      <td class="align:center;">
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.note }}</p>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {{ pagination.info }}
+                {{ pagination.links }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

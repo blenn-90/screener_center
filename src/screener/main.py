@@ -4,15 +4,18 @@ import src.utilities.static_data as static_data
 import src.utilities.formatting as utlities_sources
 import src.utilities.static_data_unsharable as static_data_unsharable 
 import src.utilities.get_data.exchange_data as kucoin_data
+import src.utilities.get_data.portfolio as portfolio_data
 import src.utilities.telegram as telegram
 import src.classes.position as position
+import src.utilities.date_utility as date_utility 
+
 import pandas as pd
 from os import listdir
 from os.path import isfile, join
 import sys
 from pathlib import Path
 import math
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 #read all excel and calculate dataframes
 def get_data():
@@ -217,9 +220,9 @@ def get_dashboard_data(final_dataset, positions):
     counter_total_pair = len(final_dataset)
 
     message = "Market Breath Currently \\"+ str(utlities_sources.fun_format_2decimal(counter_bullish_pair / counter_total_pair * 100)).replace(".", "\\.") +"% Bullish Cross on \\"+str(counter_total_pair)+" Total Pair"
-    telegram.send_message_chris(message)
+    #telegram.send_message_chris(message)
     message = "Average Ema Distance Currently "+str(utlities_sources.fun_format_2decimal(avg_ema_distance)).replace(".", "\\.").replace("-", "\\-")+ "% on "+str(counter_total_pair).replace("-", "\\-")+ " Total Pair "
-    telegram.send_message_chris(message)
+    #telegram.send_message_chris(message)
 
     dashboard_json = {'avg_ema_distance':utlities_sources.fun_format_2decimal(avg_ema_distance), 
                       'counter_bullish_pair': counter_bullish_pair, 
@@ -245,3 +248,60 @@ def get_dashboard_data(final_dataset, positions):
     
     print("---CALCULATE DASHBOARD| END---")
     return dashboard_json
+
+
+def get_portfolio():
+    print("---CALCULATE PORTFOLIO VALUE | START---")
+    
+
+    if static_data_unsharable.project_is_live==1: 
+        path = static_data_unsharable.project_sys_path_live
+    else: 
+        path = sys.path[static_data_unsharable.project_sys_path_position] + static_data_unsharable.project_separator_path + "data"
+    
+    #read cycles data file
+    cycle_data_df = pd.read_csv(
+            path + static_data_unsharable.project_separator_path +  "cycles_data" + static_data_unsharable.project_separator_path + "cycles_data.csv",
+            usecols=[0,1],
+            names=["pair",'born_at_cycle'],
+            skiprows=[0]
+        )
+    
+    portfolio_json = portfolio_data.portfolio
+    portfolio_balance = portfolio_data.portfolio['balance']
+    current_balance = portfolio_balance
+    open_trades = 0
+    closed_trades = 0
+    total_open_risk = 0
+    unrealized = 0
+    realized = 0
+    for item in portfolio_json['composition']:
+        data = kucoin_data.read_csv_data(path, 'kucoin_4h', item["pair"]+'-USDT.csv')
+        if data.empty: 
+            continue
+        filter_data = data[ data.index > "2024-02-01"]
+        item['market_price'] = filter_data.iloc[-1]['Close']
+        if item['status'] == 'Open':
+            open_trades = open_trades + 1
+            total_open_risk = total_open_risk + item['risk']
+            result = ((item['market_price'] - item['buy_price']) / item['buy_price']) * item['risk']
+            unrealized = unrealized + result
+            current_balance = current_balance + (current_balance * result / 100)
+            item['result'] = utlities_sources.fun_format_2decimal(result)
+            item['closing_price'] = ""
+        if item['status'] == 'Closed':
+            closed_trades = closed_trades + 1
+            result = ((item['closing_price'] - item['buy_price']) / item['buy_price']) * item['risk']
+            realized = realized + result
+            current_balance = current_balance + (current_balance * result / 100)
+            item['result'] = utlities_sources.fun_format_2decimal(result)
+    
+    portfolio_json['current_balance'] = utlities_sources.fun_format_2decimal(current_balance)
+    portfolio_json['open_trades'] = open_trades     
+    portfolio_json['closed_trades'] = closed_trades        
+    portfolio_json['total_open_risk'] = total_open_risk 
+    portfolio_json['realized'] = utlities_sources.fun_format_2decimal(realized)
+    portfolio_json['unrealized'] = utlities_sources.fun_format_2decimal(unrealized) 
+
+    print("---CALCULATE PORTFOLIO | END---")
+    return portfolio_json
