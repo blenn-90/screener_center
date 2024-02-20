@@ -9,21 +9,7 @@
         <div class="row">
           <div class="col-xl-12">
             <div class="row">
-              <div class="col-md-2 col-2">
-                <div class="card">
-                  <div class="card-header mx-4 p-3 text-center">
-                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
-                      <i class="material-icons opacity-10">account_balance</i>
-                    </div>
-                  </div>
-                  <div class="card-body pt-0 p-3 text-center">
-                    <h6 class="text-center mb-0">Account balance</h6>
-                    <span class="text-xs">19/02/2024</span>
-                    <hr class="horizontal dark my-3">
-                    <h5 class="mb-0">{{current_balance}}$</h5>
-                  </div>
-                </div>
-              </div>
+              
               <div class="col-md-2 col-2">
                 <div class="card">
                   <div class="card-header mx-4 p-3 text-center">
@@ -43,14 +29,29 @@
                 <div class="card">
                   <div class="card-header mx-4 p-3 text-center">
                     <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">account_balance</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Account balance</h6>
+                    <span class="text-xs">19/02/2024</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{current_balance}}$</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
                       <i class="material-icons opacity-10">timeline</i>
                     </div>
                   </div>
                   <div class="card-body pt-0 p-3 text-center">
-                    <h6 class="text-center mb-0">Open Trades</h6>
-                    <span class="text-xs">{{open_trades}}</span>
+                    <h6 class="text-center mb-0">Unrealized</h6>
+                    <span class="text-xs">{{unrealized}}%</span>
                     <hr class="horizontal dark my-3">
-                    <h5 class="mb-0">{{unrealized}}%</h5>
+                    <h5 class="mb-0">{{unrealized_dollar}}$</h5>
                   </div>
                 </div>
               </div>
@@ -63,9 +64,9 @@
                   </div>
                   <div class="card-body pt-0 p-3 text-center">
                     <h6 class="text-center mb-0">Closed Trades</h6>
-                    <span class="text-xs">{{closed_trades}}</span>
+                    <span class="text-xs">{{realized}}%</span>
                     <hr class="horizontal dark my-3">
-                    <h5 class="mb-0">{{realized}}%</h5>
+                    <h5 class="mb-0">{{realized_dollar}}$</h5>
                   </div>
                 </div>
               </div>
@@ -98,15 +99,16 @@
                       <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.date }}</p></td>
                       <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.pair }}</p></td>
                       <td class=""><p class="text-xs font-weight-bold mb-0">{{ portfolio.exchange }}</p></td>
-                      <td class="align-middle text-sm">{{ portfolio.status }}</td>
+                      
+                      <td class="align-middle text-sm"><span class="badge badge-sm bg-gradient-{{ portfolio.status_label }}">{{ portfolio.status }}</span></td>
                       <td class="">
                         <p class="text-xs font-weight-bold mb-0">{{ portfolio.buy_price }}</p>
                       </td>
                       <td class="">
-                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.market_price }}</p>
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.market_price }} {{ portfolio.market_price_perc }}</p>
                       </td>
                       <td class="">
-                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.closing_price }}</p>
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.closing_price }} {{ portfolio.closing_price_perc }}</p>
                       </td>
                       <td class="">
                         <p class="text-xs font-weight-bold mb-0">{{ portfolio.risk }}%</p>
@@ -115,7 +117,7 @@
                         <p class="text-xs font-weight-bold mb-0">{{ portfolio.result }}%</p>
                       </td>
                       <td class="align:center;">
-                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.note }}</p>
+                        <p class="text-xs font-weight-bold mb-0">{{ portfolio.fee }}</p>
                       </td>
                     </tr>
                     {% endfor %}

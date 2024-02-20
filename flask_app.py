@@ -10,7 +10,7 @@ headings = ("Pair", "Ema Cross Value", "Current Value", "Current Ema Distance", 
 #label updates table
 headings_signal = ("Pair", "Type", "Value",  "Fast Ema (72)", "Slow Ema (256)", "ATR", "Hardstop (x4 atr)", "Born at cycle")
 #label updates table
-headings_portfolio = ("Date","Pair", "Exchange", "Status", "Buy Price", "Market Price", "Close Price", "Risk", "Result", "Note")
+headings_portfolio = ("Date","Pair", "Exchange", "Status", "Buy Price", "Market Price", "Close Price", "Risk", "Result", "Fee")
 #read data from folder
 data = screener.get_data()
 #calculate positions
@@ -81,7 +81,7 @@ def updates_def():
 def portfolio_def():
     menu = [{'label':'Dashboard','class':'', 'href':'/index', 'icon':'dashboard'}, 
         {'label':'Open Trades','class':'', 'href':'/positions', 'icon':'receipt_long'}, 
-        {'label':'Last Updates','class':'active bg-gradient-primary', 'href':'/updates', 'icon':'notifications'}]
+        {'label':'Last Updates','class':'', 'href':'/updates', 'icon':'notifications'}]
     
     page = int(request.args.get('page', 1))
     per_page = 50
@@ -101,7 +101,9 @@ def portfolio_def():
                             closed_trades = portfolio["closed_trades"],
                             total_open_risk = portfolio["total_open_risk"],
                             realized = portfolio["realized"],
-                            unrealized = portfolio["unrealized"]
+                            unrealized = portfolio["unrealized"],
+                            realized_dollar = portfolio["realized_dollar"],
+                            unrealized_dollar = portfolio["unrealized_dollar"]
                             )
 
 #download tradingview list in position page
