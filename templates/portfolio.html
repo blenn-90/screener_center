@@ -64,9 +64,24 @@
                   </div>
                   <div class="card-body pt-0 p-3 text-center">
                     <h6 class="text-center mb-0">Closed Trades</h6>
-                    <span class="text-xs">{{realized}}%</span>
+                    <span class="text-xs">{{closed_trades}} trades</span>
                     <hr class="horizontal dark my-3">
                     <h5 class="mb-0">{{realized_dollar}}$</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 col-2">
+                <div class="card">
+                  <div class="card-header mx-4 p-3 text-center">
+                    <div class="icon icon-shape icon-lg bg-gradient-primary shadow text-center border-radius-lg">
+                      <i class="material-icons opacity-10">import_contacts</i>
+                    </div>
+                  </div>
+                  <div class="card-body pt-0 p-3 text-center">
+                    <h6 class="text-center mb-0">Exposure</h6>
+                    <span class="text-xs">{{open_trades}} trades</span>
+                    <hr class="horizontal dark my-3">
+                    <h5 class="mb-0">{{total_open_position}}$</h5>
                   </div>
                 </div>
               </div>

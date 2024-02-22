@@ -298,7 +298,8 @@ def get_portfolio():
     portfolio_json['current_balance'] = utlities_sources.fun_format_1decimal(current_balance)
     portfolio_json['open_trades'] = open_trades     
     portfolio_json['closed_trades'] = closed_trades        
-    portfolio_json['total_open_risk'] = total_open_risk 
+    portfolio_json['total_open_risk'] = total_open_risk
+    portfolio_json['total_open_position'] = int((total_open_risk / 100 * portfolio_balance) + realized + unrealized)
     portfolio_json['realized'] = utlities_sources.fun_format_2decimal(realized)
     portfolio_json['unrealized'] = utlities_sources.fun_format_2decimal(unrealized)
     portfolio_json['realized_dollar'] = utlities_sources.fun_format_2decimal(realized_dollar)

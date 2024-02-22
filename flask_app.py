@@ -100,6 +100,7 @@ def portfolio_def():
                             open_trades = portfolio["open_trades"],
                             closed_trades = portfolio["closed_trades"],
                             total_open_risk = portfolio["total_open_risk"],
+                            total_open_position = portfolio["total_open_position"],
                             realized = portfolio["realized"],
                             unrealized = portfolio["unrealized"],
                             realized_dollar = portfolio["realized_dollar"],
